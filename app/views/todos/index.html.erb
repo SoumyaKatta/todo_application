@@ -1,0 +1,75 @@
+<div class="todo-container">
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-number"><%= @pending_todos.count %></div>
+      <div>Pending</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><%= @completed_todos.count %></div>
+      <div>Completed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number"><%= @todos.count %></div>
+      <div>Total</div>
+    </div>
+  </div>
+  
+  <div style="text-align: center; margin-bottom: 20px;">
+    <%= link_to "Add New Todo", new_todo_path, class: "btn btn-primary" %>
+  </div>
+</div>
+
+<% if @pending_todos_by_month.present? %>
+  <div class="todo-container">
+    <h3>📌 Pending Tasks</h3>
+    <% @pending_todos_by_month.each do |month, todos| %>
+      <h4><%= month %></h4>
+      <% todos.each do |todo| %>
+        <div class="todo-item">
+          <div class="todo-title">
+            <strong><%= todo.title %></strong>
+            <% if todo.description.present? %>
+              <br><small style="color: #6c757d;"><%= todo.description %></small>
+            <% end %>
+          </div>
+          <div>
+            <%= link_to "✓", toggle_todo_path(todo), class: "btn btn-success", data: { "turbo-method": :patch } %>
+            <%= link_to "👁️ View", todo_path(todo), class: "btn", style: "background: #6f42c1; color: #fff; border-radius: 20px; padding: 4px 18px; margin-right: 4px; font-weight: bold; letter-spacing: 1px; border: none; box-shadow: 0 2px 6px rgba(111,66,193,0.15); transition: background 0.2s;" %>
+            <%= link_to "Delete", todo_path(todo), class: "btn btn-danger", data: { "turbo-method": :delete, "turbo-confirm": "Are you sure?" } %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @completed_todos_by_month.present? %>
+  <div class="todo-container">
+    <h3>✅ Completed Tasks</h3>
+    <% @completed_todos_by_month.each do |month, todos| %>
+      <h4><%= month %></h4>
+      <% todos.each do |todo| %>
+        <div class="todo-item todo-completed">
+          <div class="todo-title">
+            <strong><%= todo.title %></strong>
+            <% if todo.description.present? %>
+              <br><small style="color: #6c757d;"><%= todo.description %></small>
+            <% end %>
+          </div>
+          <div>
+            <%= link_to "↶", toggle_todo_path(todo), method: :patch, class: "btn btn-secondary", title: "Mark as pending" %>
+            <%= link_to "Delete", todo_path(todo), class: "btn btn-danger", data: { "turbo-method": :delete, "turbo-confirm": "Are you sure?" } %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @todos.empty? %>
+  <div class="todo-container" style="text-align: center; color: #6c757d;">
+    <h3>No todos yet!</h3>
+    <p>Create your first todo to get started.</p>
+    <%= link_to "Add Your First Todo", new_todo_path, class: "btn btn-primary" %>
+  </div>
+<% end %>

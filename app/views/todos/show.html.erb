@@ -1,0 +1,36 @@
+<div class="todo-container">
+  <h2><%= @todo.title %></h2>
+  
+  <div style="margin: 20px 0;">
+    <strong>Status:</strong>
+    <span class="<%= 'todo-completed' if @todo.completed? %>">
+      <%= @todo.completed? ? "✅ Completed" : "📌 Pending" %>
+    </span>
+  </div>
+  
+  <% if @todo.description.present? %>
+    <div style="margin: 20px 0;">
+      <strong>Description:</strong>
+      <p><%= simple_format(@todo.description) %></p>
+    </div>
+  <% end %>
+  
+  <div style="margin: 20px 0;">
+    <strong>Created:</strong>
+    <%= @todo.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+  </div>
+  
+  <% if @todo.updated_at != @todo.created_at %>
+    <div style="margin: 20px 0;">
+      <strong>Last Updated:</strong>
+      <%= @todo.updated_at.strftime("%B %d, %Y at %I:%M %p") %>
+    </div>
+  <% end %>
+  
+  <div style="margin-top: 30px;">
+    <%= link_to "Edit", edit_todo_path(@todo), class: "btn btn-warning" %>
+    <%= link_to "Delete", todo_path(@todo), method: :delete, 
+                class: "btn btn-danger", confirm: "Are you sure?" %>
+    <%= link_to "Back to Todos", todos_path, class: "btn btn-secondary" %>
+  </div>
+</div>

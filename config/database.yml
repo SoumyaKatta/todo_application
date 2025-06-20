@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  username: postgres
+  password: 1405
+  pool: 5
+
+development:
+  <<: *default
+  database: "todos"
+
+test:
+  <<: *default
+  database: "todos_test"
+
+production:
+  <<: *default
+  database: your_project_production
+  username: your_project
+  password: <%= ENV['YOUR_PROJECT_DATABASE_PASSWORD'] %>
